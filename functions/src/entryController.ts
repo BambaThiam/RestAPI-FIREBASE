@@ -1,9 +1,56 @@
 import { Response } from 'express'
 import { db } from './config/firebase'
 
+// type EntryType = {
+//   title: string
+//   text: string
+// }
 type EntryType = {
-  title: string
-  text: string
+  nom: string
+  lat_coor1: string
+  long_coor1: string
+  adr_num?: string
+  adr_voie?: string
+  com_cp?: string
+  com_insee?: string
+  com_nom?: string
+  acc: string
+  acc_lib: string
+  acc_pcsec: string
+  acc_acc?: string
+  acc_etg?: string
+  acc_complt?: string
+  photo1?: string
+  photo2?: string
+  disp_j: string
+  disp_h: string
+  disp_complt?: string
+  tel1: string
+  tel2?: string
+  site_email?: string
+  date_instal?: string
+  etat?: string
+  etat_fonct: string
+  fab_siren?: string
+  fab_rais: string
+  mnt_siren?: string
+  mnt_rais?: string
+  modele: string
+  num_serie: string
+  id_euro?: string
+  lc_ped?: string
+  dtpr_lcped?: string
+  dtpr_lcad?: string
+  dtpr_bat?: string
+  freq_mnt?: string
+  dispsurv?: string
+  dermnt: string
+  expt_siren: string
+  expt_siret?: string
+  expt_rais: string
+  expt_tel1: string
+  expt_tel2?: string
+  expt_email: string
 }
 
 type Request = {
@@ -11,14 +58,37 @@ type Request = {
   params: { entryId: string }
 }
 
+
 const addEntry = async (req: Request, res: Response) => {
-  const { title, text } = req.body
+  const {
+    nom,
+    lat_coor1,
+    long_coor1,
+    // acc,
+    // acc_lib,
+    disp_j,
+    // disp_h,
+    // tel1,
+    // etat_fonct,
+    // fab_rais,
+    // modele,
+    // num_serie,
+    // dermnt,
+    // expt_siren,
+    // expt_rais,
+    // expt_tel1,
+    // expt_email,
+  } = req.body
   try {
     const entry = db.collection('entries').doc()
     const entryObject = {
       id: entry.id,
-      title,
-      text,
+      nom,
+      lat_coor1,
+      long_coor1,
+      // acc,
+      // acc_lib,
+      disp_j,
     }
 
     await entry.set(entryObject)
@@ -57,7 +127,8 @@ const getAllEntries = async (_req: Request, res: Response): Promise<void> => {
 
 const updateEntry = async (req: Request, res: Response): Promise<void> => {
   const {
-    body: { text, title },
+    // body: { text, title },
+    body: { nom, lat_coor1, long_coor1, disp_j },
     params: { entryId },
   } = req
 
@@ -66,8 +137,10 @@ const updateEntry = async (req: Request, res: Response): Promise<void> => {
     const currentData = (await entry.get()).data() || {}
 
     const entryObject = {
-      title: title || currentData.title,
-      text: text || currentData.text,
+      nom: nom || currentData.nom,
+      lat_coor1: lat_coor1 || currentData.lat_coor1,
+      long_coor1: long_coor1 || currentData.long_coor1,
+      disp_j: disp_j || currentData.disp_j,
     }
 
     await entry.set(entryObject).catch((error) => {
