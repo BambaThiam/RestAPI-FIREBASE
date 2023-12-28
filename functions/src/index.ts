@@ -19,11 +19,15 @@ import {
 // })
 
 const app = express()
+//param to allow cors policy for fecthing data at front
+const cors = require('cors')
+app.use(cors())
 
 app.get('/', (req, res) => res.status(200).send('Bonjour la team, from Bamba!'))
 app.post('/entries', addEntry)
 app.get('/entries', getAllEntries)
 app.patch('/entries/:entryId', updateEntry)
 app.delete('/entries/:entryId', deleteEntry)
+
 
 exports.app = functions.https.onRequest(app)
